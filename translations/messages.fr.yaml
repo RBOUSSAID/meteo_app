@@ -1,0 +1,8 @@
+title: "Météo à %city%"
+search_placeholder: "Entrer une ville"
+search_button: "Rechercher"
+current_weather: "Météo actuelle à %city%"
+sunrise: "Lever du soleil"
+sunset: "Coucher du soleil"
+forecast_title: "Prévisions pour les 3 prochains jours"
+rain_chance: "Risque de pluie"

@@ -1,0 +1,317 @@
+/* ============================================= */
+/* STYLES GÉNÉRAUX */
+/* ============================================= */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #3498db;
+}
+
+h2 {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.4rem;
+    margin-top: 25px;
+    color: #2980b9;
+}
+
+/* ============================================= */
+/* FORMULAIRE DE RECHERCHE */
+/* ============================================= */
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-input {
+    padding: 12px 15px;
+    width: 70%;
+    border: 2px solid #3498db;
+    border-radius: 25px 0 0 25px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-input:focus {
+    border-color: #2980b9;
+}
+
+.search-button {
+    padding: 12px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 0 25px 25px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #2980b9;
+}
+
+/* ============================================= */
+/* MÉTÉO ACTUELLE */
+/* ============================================= */
+.weather-today {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.weather-info {
+    flex: 1;
+    min-width: 250px;
+}
+
+.weather-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.weather-info-item {
+    padding: 8px 0;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+.weather-info-item:last-child {
+    border-bottom: none;
+}
+
+.weather-temp {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.weather-feelslike {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.weather-icon-container {
+    text-align: center;
+    min-width: 120px;
+}
+
+.weather-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+/* ============================================= */
+/* INFOS SOLEIL */
+/* ============================================= */
+.sun-info {
+    background: rgba(255, 204, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.sun-info-item {
+    padding: 8px 0;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ============================================= */
+/* PRÉVISIONS SUR 3 JOURS */
+/* ============================================= */
+.forecast-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.forecast-item {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    list-style: none;
+}
+
+.forecast-day {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.forecast-weather {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.forecast-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.forecast-temp-range {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.rain-probability {
+    display: inline-block;
+    margin-top: 8px;
+    color: #3498db;
+    font-weight: 500;
+}
+
+/* ============================================= */
+/* CARTE */
+/* ============================================= */
+.weather-map {
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    height: 300px;
+    background: #f8f9fa;
+}
+
+/* ============================================= */
+/* SUGGESTIONS D'AUTOCOMPLÉTION */
+/* ============================================= */
+.suggestion-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+    z-index: 100;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.suggestion-item:hover {
+    background-color: #f5f5f5;
+}
+
+/* ============================================= */
+/* VERSION MOBILE */
+/* ============================================= */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .weather-today {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .weather-icon-container {
+        margin-top: 20px;
+        order: -1;
+    }
+    
+    .search-form {
+        flex-direction: column;
+    }
+    
+    .search-input {
+        width: 100%;
+        border-radius: 25px;
+        margin-bottom: 10px;
+    }
+    
+    .search-button {
+        width: 100%;
+        border-radius: 25px;
+    }
+    
+    .forecast-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .weather-info-item, .sun-info-item {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ============================================= */
+/* ÉTATS SPÉCIAUX */
+/* ============================================= */
+.high-uv {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.moderate-uv {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.low-uv {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.rainy {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.sunny {
+    background-color: rgba(241, 196, 15, 0.1);
+}

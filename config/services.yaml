@@ -1,0 +1,25 @@
+parameters:
+    weather.api_key: '%env(WEATHER_API_KEY)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Configuration spécifique si nécessaire
+    App\Controller\MeteoController:
+        arguments:
+            $apiKey: '%weather.api_key%'
+
+    # Configuration générale
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Controller/MeteoController.php' # Si vous voulez garder la config manuelle
+
+    #extension langues
+    App\Twig\AppExtension:
+        tags: [twig.extension]

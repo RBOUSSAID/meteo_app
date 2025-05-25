@@ -1,0 +1,8 @@
+title: "Weather in %city%"
+search_placeholder: "Enter a city"
+search_button: "Search"
+current_weather: "Current weather in %city%"
+sunrise: "Sunrise"
+sunset: "Sunset"
+forecast_title: "3-day Forecast"
+rain_chance: "Chance of rain"

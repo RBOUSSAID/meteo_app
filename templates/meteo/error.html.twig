@@ -1,0 +1,9 @@
+{# templates/meteo/error.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Erreur de récupération météo</h1>
+    <p>{{ message }}</p>
+        
+    <a href="{{ path('app_meteo') }}">Retour</a>
+{% endblock %}

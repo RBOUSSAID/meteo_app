@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Titre principal avec le nom de la ville #}
+    <h1>Météo à {{ ville_normalisee }}</h1>
+
+    {# Formulaire de recherche avec autocomplétion #}
+    <form method="get" autocomplete="off" class="search-form">
+        <input type="text" name="ville" id="ville-input" class="search-input" placeholder="Entrer une ville" value="{{ ville|default('') }}">
+        <div id="suggestions" class="suggestion-box"></div>
+        <button type="submit" class="search-button">Rechercher</button>
+    </form>
+
+    {# Section météo actuelle #}
+    <h2>Météo actuelle à {{ ville_normalisee }}</h2>
+       
+    <div class="weather-today">
+        <div class="weather-info">
+            <ul class="weather-info-list">
+                <li class="weather-info-item weather-temp">Température : {{ meteo.temp_c }} °C</li>
+                <li class="weather-info-item weather-feelslike">Température ressentie : {{ meteo.feelslike_c }} °C</li>
+                <li class="weather-info-item">Condition : {{ meteo.condition.text }}</li>
+                <li class="weather-info-item">Vent : {{ meteo.wind_kph }} km/h</li>
+                <li class="weather-info-item {{ meteo.uv > 6 ? 'high-uv' : (meteo.uv > 3 ? 'moderate-uv' : 'low-uv') }}">
+                    Indice UV : {{ meteo.uv }}
+                </li>
+                <li class="weather-info-item">Humidité : {{ meteo.humidity }}%</li>
+            </ul>
+        </div>
+        <div class="weather-icon-container">
+            {# Icône météo #}
+            <img src="https:{{ meteo.condition.icon }}" alt="Icône météo" class="weather-icon">
+        </div>
+    </div>   
+   
+    <h3>Soleil 🌅</h3>
+    <ul class="sun-info">
+        <li class="sun-info-item">Lever du soleil : {{ previsions[0].astro.sunrise ?? 'N/A' }}</li>
+        <li class="sun-info-item">Coucher du soleil : {{ previsions[0].astro.sunset ?? 'N/A' }}</li>
+    </ul>
+
+    <h3>Carte 📍</h3>
+    <div id="carte" class="weather-map" data-lat="{{ lat }}" data-lon="{{ lon }}" data-ville="{{ ville_normalisee|e('html_attr') }}"></div>    
+
+    {# Section prévisions sur 3 jours #}
+    <h2>Prévisions pour les 3 prochains jours</h2>
+    <ul class="forecast-list">
+        {% for jour in previsions %}
+            <li class="forecast-item {{ jour.day.daily_will_it_rain ? 'rainy' : 'sunny' }}">
+                <strong class="forecast-day">{{ jour.date|jour_fr }} {{ jour.date|date('d/m') }}</strong>
+                <div class="forecast-weather">
+                    <img src="https:{{ jour.day.condition.icon|e }}" alt="" class="forecast-icon">
+                    <div>
+                        {{ jour.day.avgtemp_c }} °C - {{ jour.day.condition.text }}
+                        <div class="forecast-temp-range">
+                            (Min: {{ jour.day.mintemp_c }} °C / Max: {{ jour.day.maxtemp_c }} °C)
+                        </div>
+                    </div>
+                </div>
+                <span class="rain-probability">🌧️ Risque de pluie : {{ jour.day.daily_chance_of_rain }}%</span>
+            </li>
+        {% endfor %}
+    </ul>
+    
+{% endblock %}
