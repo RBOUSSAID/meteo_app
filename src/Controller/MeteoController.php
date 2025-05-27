@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MeteoController extends AbstractController
 {
@@ -23,12 +24,13 @@ class MeteoController extends AbstractController
     public function index(Request $request): Response
     {
         // Récupération ville depuis ?ville=... ou Paris par défaut
-        $ville = $request->query->get('ville', 'Paris');
+        $ville = $request->query->get('ville');
 
-        // Sécurité minimale sur le nom de la ville
-        if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/u', $ville)) {
+        // Si aucune ville n’est fournie (ex : première visite), fallback sur Paris
+        if (!$ville || !preg_match('/^[a-zA-ZÀ-ÿ\s\-]+$/u', $ville)) {
             $ville = 'Paris';
         }
+
 
         try {
             $response = $this->client->request(
@@ -56,7 +58,7 @@ class MeteoController extends AbstractController
 
 
     // src/Controller/ApiController.php
-#[Route('/api/weather-suggestions')]
+#[Route('/api/weather-suggestions', name: 'api_weather_suggestions', methods: ['GET'])]
 public function getSuggestions(Request $request): JsonResponse
 {
     $query = $request->query->get('q', '');

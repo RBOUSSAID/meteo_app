@@ -21,31 +21,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const villeInput = document.getElementById('ville-input');
     const suggestionsBox = document.getElementById('suggestions');
 
-    // Délai pour éviter trop de requêtes (debounce)
     let debounceTimer;
 
-    // Écoute la saisie de l'utilisateur
-    villeInput.addEventListener('input', async (e) => {
+    villeInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.trim();
 
-        // On ignore si moins de 2 caractères
         if (searchTerm.length < 2) {
             suggestionsBox.innerHTML = '';
             suggestionsBox.style.display = 'none';
             return;
         }
 
-        // On attend 300ms après la dernière frappe
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(async () => {
             try {
-                // 1. Appel à WeatherAPI pour les suggestions
-                const response = await fetch(`/api/weather-suggestions?q=${encodeURIComponent(searchTerm)}`)
-                    .then(response => response.json())
-                    .then(data => console.log(data));
-                const cities = await response.json();
+                const response = await fetch(`/api/weather-suggestions?q=${encodeURIComponent(searchTerm)}`);
 
-                // 2. Affichage des suggestions
+                if (!response.ok) {
+                    throw new Error('Erreur réseau ou serveur');
+                }
+
+                const cities = await response.json();
+                console.log('Suggestions reçues :', cities);
+
                 if (cities.length > 0) {
                     suggestionsBox.innerHTML = cities
                         .map(city => `
@@ -54,37 +52,53 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         `)
                         .join('');
-                    suggestionsBox.style.display = 'block';
                 } else {
                     suggestionsBox.innerHTML = '<div class="suggestion-item">Aucun résultat</div>';
-                    suggestionsBox.style.display = 'block';
                 }
+
+                suggestionsBox.style.display = 'block';
             } catch (error) {
-                console.error("Erreur API :", error);
+                console.error("Erreur lors de la récupération des suggestions :", error);
                 suggestionsBox.innerHTML = '<div class="suggestion-item">Service indisponible</div>';
                 suggestionsBox.style.display = 'block';
             }
         }, 300);
     });
 
-    // 3. Clic sur une suggestion → remplit le champ
     suggestionsBox.addEventListener('click', (e) => {
         if (e.target.classList.contains('suggestion-item')) {
-            villeInput.value = e.target.getAttribute('data-city'); // Format parfait pour WeatherAPI
+            villeInput.value = e.target.getAttribute('data-city');
             suggestionsBox.style.display = 'none';
-            // Optionnel : Soumission auto du formulaire
             document.querySelector('.search-form').submit();
         }
     });
 
-    // 4. Cacher les suggestions si clic ailleurs
     document.addEventListener('click', (e) => {
-        if (e.target !== villeInput) {
+        if (e.target !== villeInput && !suggestionsBox.contains(e.target)) {
             suggestionsBox.style.display = 'none';
         }
     });
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('ville') && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+                const response = await fetch(`https://api.weatherapi.com/v1/search.json?key={{ weather_api_key }}&q=${latitude},${longitude}`);
+                const data = await response.json();
 
-    
+                if (data.length > 0) {
+                    const ville = data[0].name;
+                    window.location.href = `/?ville=${encodeURIComponent(ville)}`;
+                }
+            } catch (err) {
+                console.error("Erreur de géolocalisation météo", err);
+            }
+        }, (error) => {
+            console.warn("Géolocalisation refusée ou échouée", error);
+        });
+    }
+});
